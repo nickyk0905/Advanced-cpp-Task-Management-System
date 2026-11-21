@@ -24,7 +24,7 @@ TaskManager::~TaskManager()
 // Create User
 void TaskManager::createUser()
 {
-    cout << "----- CREATING A USER -----\n";
+    cout << "-------- CREATING A USER --------\n";
 
     int userId = readUserId("\nEnter User ID: ", *this);
     string name = readText("\nEnter User Name: ");
@@ -41,8 +41,9 @@ void TaskManager::createUser()
     );
 
     users.emplace(userId, newUser);
-
-    cout << "\nUser added to Task Manager successfully!\n";
+    cout<<"\n--------------------------------------------------------------------------";
+    cout << "\n\tUser added to Task Manager successfully!\n";
+    cout<<"\n--------------------------------------------------------------------------";
 }
 
 // Create Project

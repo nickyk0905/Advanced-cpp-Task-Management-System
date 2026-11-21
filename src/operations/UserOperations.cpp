@@ -7,6 +7,7 @@
 
 using namespace std;
 
+
 int readUserId(const string& prompt, TaskManager& manager)
 {
     string input;
@@ -19,7 +20,7 @@ int readUserId(const string& prompt, TaskManager& manager)
         // Empty check
         if (input.empty())
         {
-            cout << "\nUser ID cannot be empty.\n\n";
+            cout << "\nUser ID cannot be empty.\n";
             continue;
         }
 
@@ -31,30 +32,42 @@ int readUserId(const string& prompt, TaskManager& manager)
             // Integer check
             if (position != input.length())
             {
-                throw invalid_argument("\nUser ID must be a valid integer.");
+                throw invalid_argument(
+                    "User ID must be a valid integer.\n"
+                );
             }
 
             // Positive check
             if (id <= 0)
             {
-                throw invalid_argument("User ID must be greater than 0.\n\n");
+                throw invalid_argument(
+                    "User ID must be greater than 0.\n"
+                );
             }
 
             // Unique ID check
             if (manager.userExists(id))
             {
-                throw invalid_argument("\nUser ID already exists.\n");
+                throw invalid_argument(
+                    "User ID already exists.\n"
+                );
             }
 
             return id;
         }
-        catch (const exception& e)
+        catch (invalid_argument& e)
         {
-            cout << e.what();
+            cout << "\nError: " << e.what() << '\n';
+            continue;
+        }
+        catch (exception& e)
+        {
+            cout << "\nError: " << e.what() << '\n';
             continue;
         }
     }
 }
+
 
 // Read text input
 string readText(const string& prompt)
@@ -68,7 +81,7 @@ string readText(const string& prompt)
         
         if (input.empty())
         {
-            cout<<"\nInput cannot be empty.\n";
+            cout<<"\nError: Input cannot be empty.\n";
             continue;
         }
         try
@@ -107,7 +120,7 @@ string readEmail(const string& prompt)
         // Check empty input
         if (input.empty())
         {
-            cout << "Email cannot be empty.\n";
+            cout << "\nError: Email cannot be empty.\n";
             continue;
         }
 
@@ -136,7 +149,7 @@ string readEmail(const string& prompt)
         }
         catch (const exception&)
         {
-            cout << "Invalid email address. Please enter a valid email.\n";
+            cout << "\nError: Invalid email address. Please enter a valid email.\n";
         }
     }
 }
@@ -168,7 +181,7 @@ Role readRole(const string& prompt)
             return Role::Tester;
         }
 
-        cout << "Invalid role entered.\n";
+        cout << "Error: Invalid role entered.\n";
     }
 }
 
@@ -183,16 +196,16 @@ bool readActiveStatus(const string& prompt)
 
         getline(cin, status);
 
-        if (status == "Yes" || status == "yes")
+        if (status == "Yes" || status == "yes" || status == "Y" || status == "y")
         {
             return true;
         }
 
-        if (status == "No" || status == "no")
+        if (status == "No" || status == "no" || status == "N" || status == "n")
         {
             return false;
         }
 
-        cout << "Invalid input. Please enter Yes or No.\n";
+        cout << "Invalid input. Please enter a valid input.\n";
     }
 }
