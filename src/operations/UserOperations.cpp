@@ -83,22 +83,15 @@ string readText(const string& prompt)
         {            
             if(input.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ") != string::npos) {
                 throw invalid_argument("Input contains invalid characters.");
-                continue;    
             }
 
             return input;
         }
         catch (const invalid_argument& e)
         {
-            cout << "Error: " << e.what() << '\n';
+            cout << "\nError: " << e.what() << '\n';
         }
-        catch (const exception& e)
-        {
-            cout << "Error: " << e.what() << '\n';
-        } 
     }
-
-    return input;
 }
 
 
@@ -121,30 +114,157 @@ string readEmail(const string& prompt)
 
         try
         {
+            // Check total email length
+            if (input.length() > 254)
+            {
+                throw invalid_argument("Email address is too long.");
+            }
+
             // Find @
             size_t atPosition = input.find('@');
 
-            // Basic email validation
+            // Exactly one @
             if (atPosition == string::npos ||
-                atPosition == 0 ||
-                atPosition == input.length() - 1 ||
-                atPosition != input.rfind('@') ||
-                input.find('.', atPosition) == string::npos)
+                atPosition != input.rfind('@'))
             {
-                throw invalid_argument("Invalid email");
+                throw invalid_argument("Email must contain exactly one '@'.");
             }
 
-            // Check for spaces
+            // Separate local part and domain
+            string localPart = input.substr(0, atPosition);
+            string domain = input.substr(atPosition + 1);
+
+            // Check local part and domain are not empty
+            if (localPart.empty() || domain.empty())
+            {
+                throw invalid_argument("Invalid email format.");
+            }
+
+            // Check spaces
             if (input.find(' ') != string::npos)
             {
-                throw invalid_argument("Invalid email");
+                throw invalid_argument("Email cannot contain spaces.");
+            }
+
+            // Check consecutive dots
+            if (input.find("..") != string::npos)
+            {
+                throw invalid_argument("Email cannot contain consecutive dots.");
+            }
+
+            // Local part cannot start or end with '.'
+            if (localPart.front() == '.' ||
+                localPart.back() == '.')
+            {
+                throw invalid_argument(
+                    "Email local part cannot start or end with '.'.");
+            }
+
+            // Domain cannot start or end with '.'
+            if (domain.front() == '.' ||
+                domain.back() == '.')
+            {
+                throw invalid_argument(
+                    "Domain cannot start or end with '.'.");
+            }
+
+            // Domain must contain '.'
+            size_t dotPosition = domain.find('.');
+
+            if (dotPosition == string::npos)
+            {
+                throw invalid_argument(
+                    "Domain must contain a valid extension.");
+            }
+
+            // Allowed characters in local part
+            for (char ch : localPart)
+            {
+                if (!(isalnum(ch) ||
+                      ch == '.' ||
+                      ch == '_' ||
+                      ch == '-' ||
+                      ch == '+'))
+                {
+                    throw invalid_argument(
+                        "Email contains invalid characters.");
+                }
+            }
+
+            // Validate domain
+            for (char ch : domain)
+            {
+                if (!(isalnum(ch) || ch == '.' || ch == '-'))
+                {
+                    throw invalid_argument(
+                        "Domain contains invalid characters.");
+                }
+            }
+
+            // Check each domain label
+            size_t start = 0;
+
+            while (true)
+            {
+                size_t dot = domain.find('.', start);
+
+                string label;
+
+                if (dot == string::npos)
+                {
+                    label = domain.substr(start);
+                }
+                else
+                {
+                    label = domain.substr(start, dot - start);
+                }
+
+                // Domain label cannot be empty
+                if (label.empty())
+                {
+                    throw invalid_argument("Invalid domain format.");
+                }
+
+                // Label cannot start or end with '-'
+                if (label.front() == '-' ||
+                    label.back() == '-')
+                {
+                    throw invalid_argument(
+                        "Domain labels cannot start or end with '-'.");
+                }
+
+                if (dot == string::npos)
+                {
+                    break;
+                }
+
+                start = dot + 1;
+            }
+
+            // Validate Top-Level Domain
+            size_t lastDot = domain.rfind('.');
+            string extension = domain.substr(lastDot + 1);
+
+            if (extension.length() < 2)
+            {
+                throw invalid_argument(
+                    "Email must have a valid domain extension.");
+            }
+
+            for (char ch : extension)
+            {
+                if (!isalpha(ch))
+                {
+                    throw invalid_argument(
+                        "Domain extension must contain only letters.");
+                }
             }
 
             return input;
         }
-        catch (const exception&)
+        catch (const invalid_argument& e)
         {
-            cout << "\nError: Invalid email address. Please enter a valid email.\n";
+            cout << "\nError: " << e.what() << '\n';
         }
     }
 }
@@ -159,24 +279,24 @@ Role readRole(const string& prompt)
         string input;
         getline(cin, input);
 
-        if (input == "Admin")
+        if (input == "Admin" || input == "admin")
         {
             return Role::Admin;
         }
-        else if (input == "Manager")
+        else if (input == "Manager" || input == "manager")
         {
             return Role::Manager;
         }
-        else if (input == "Developer")
+        else if (input == "Developer" || input == "developer")
         {
             return Role::Developer;
         }
-        else if (input == "Tester")
+        else if (input == "Tester" || input == "tester")
         {
             return Role::Tester;
         }
 
-        cout << "Error: Invalid role entered.\n";
+        cout << "\nError: Invalid role entered.\n";
     }
 }
 
@@ -201,6 +321,6 @@ bool readActiveStatus(const string& prompt)
             return false;
         }
 
-        cout << "Invalid input. Please enter a valid input.\n";
+        cout << "\nError: Invalid input. Please enter a valid input.\n";
     }
 }

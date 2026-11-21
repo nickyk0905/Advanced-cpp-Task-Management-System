@@ -24,7 +24,7 @@ TaskManager::~TaskManager()
 // Create User
 void TaskManager::createUser()
 {
-    cout << "-------- CREATING A USER --------\n";
+    cout << "------------------------- CREATING A USER ------------------------------\n";
 
     int userId = readUserId("\nEnter User ID: ", *this);
     string name = readText("\nEnter User Name: ");
@@ -41,8 +41,8 @@ void TaskManager::createUser()
     );
 
     users.emplace(userId, newUser);
-    cout<<"\n--------------------------------------------------------------------------";
-    cout << "\n\tUser added to Task Manager successfully!\n";
+    cout<<"\n--------------------------------------------------------------------------\n";
+    cout << "\n\t\tUser added to Task Manager successfully!\n";
     cout<<"\n--------------------------------------------------------------------------";
 }
 
@@ -354,6 +354,59 @@ void TaskManager::viewTaskDependencies(int taskId) const
 
     cout << '\n';
 }
+
+void TaskManager::updateUser(int userId)
+{
+    cout << "------------------------- UPDATE USER INFO ------------------------------\n";
+    cout<< "\nUser ID: " << userId << '\n';
+    cout << "-----------------------------------------------------------------------\n";
+    while(true)
+    {
+        cout << "1. Update Name\n";
+        cout << "2. Update Email\n";
+        cout << "3. Update Role\n";
+        cout << "4. Update Active Status\n";
+        cout << "0. Exit Update\n";
+        
+        int choice;
+        cout<<"\nEnter your choice: ";
+        cin>>choice;
+
+        switch(choice)
+        {
+            case 1:
+                users.at(userId).setName();
+                cout << "\nUser name updated successfully!\n";
+                break;
+            case 2:
+                users.at(userId).setEmail();
+                cout << "\nUser email updated successfully!\n";
+                break;
+            case 3:
+                users.at(userId).setRole();
+                cout << "\nUser role updated successfully!\n";
+                break;
+            case 4:
+                users.at(userId).setIsActive();
+                cout << "\nUser active status updated successfully!\n";
+                break;
+            case 0:
+                cout << "\nExiting user update...\n";
+                return;
+            default:
+                cout << "\nError: Invalid choice. Please try again.\n";
+        }
+        cout<<"\nDo you want to make another update? (Y/N): ";
+        char cont;
+        cin >> cont;
+        if (cont != 'Y' && cont != 'y')
+        {
+            break;
+        }
+    }
+    cout << "-----------------------------------------------------------------------\n";
+}
+
 
 bool TaskManager::userExists(int userId) const
 {

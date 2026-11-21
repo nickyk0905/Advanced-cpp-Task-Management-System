@@ -87,10 +87,11 @@ int main()
         cout << "8. Sort Tasks By ID\n";
         cout << "9. Show High Priority Tasks\n";
         cout << "10. Delete Task\n";
-        cout << "11. View All Users\n";
-        cout << "12. View All Projects\n";
-        cout << "13. Add Task Dependency\n";
-        cout << "14. View Task Dependencies\n";
+        cout << "11. Update User Info\n";
+        cout << "12. View All Users\n";
+        cout << "13. View All Projects\n";
+        cout << "14. Add Task Dependency\n";
+        cout << "15. View Task Dependencies\n";
         cout << "0. Exit\n";
 
         choice = readInt("\nEnter your choice: ");
@@ -328,6 +329,23 @@ int main()
                 // =================================
 
                 case 11:
+                {
+                    int userId;
+                    cout<<"Enter User ID to update: ";
+                    cin>>userId;
+
+                    if (!manager.userExists(userId))
+                    {
+                        cout << "\nError: User not found.\n";
+                        break;
+                    }
+
+                    manager.updateUser(userId);
+                    break;
+                }
+
+
+                case 12:
                     manager.viewUsers();
                     break;
 
@@ -336,7 +354,7 @@ int main()
                 // VIEW ALL PROJECTS
                 // =================================
 
-                case 12:
+                case 13:
                     manager.viewProjects();
                     break;
 
@@ -345,7 +363,7 @@ int main()
                 // ADD TASK DEPENDENCY
                 // =================================
 
-                case 13:
+                case 14:
                 {
                     int taskId =
                         readInt("Enter Dependant Task ID: ");
@@ -366,7 +384,7 @@ int main()
                 // VIEW TASK DEPENDENCIES
                 // =================================
 
-                case 14:
+                case 15:
                 {
                     int taskId =
                         readInt("Enter Task ID: ");

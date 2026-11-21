@@ -62,6 +62,9 @@ public:
     // Priority filtering
     void showHighPriorityTasks() const;
 
+    // Update User
+    void updateUser(int userId);
+
     // User retrieval
     void viewUsers() const;
 
