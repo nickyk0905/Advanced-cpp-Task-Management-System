@@ -31,7 +31,7 @@ int readUserId(const string& prompt, TaskManager& manager)
             // Integer check
             if (position != input.length())
             {
-                throw invalid_argument("\nInvalid ID.");
+                throw invalid_argument("\nUser ID must be a valid integer.");
             }
 
             // Positive check
@@ -48,9 +48,9 @@ int readUserId(const string& prompt, TaskManager& manager)
 
             return id;
         }
-        catch (const exception&)
+        catch (const exception& e)
         {
-            cout << "\nPlease enter a user ID.\n";
+            cout << e.what();
             continue;
         }
     }
