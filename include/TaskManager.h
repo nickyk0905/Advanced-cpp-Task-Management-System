@@ -27,7 +27,7 @@ public:
     ~TaskManager();
 
     // User management
-    void createUser(const User& user);
+    void createUser();
 
     // Project management
     void createProject(const Project& project);
@@ -71,6 +71,8 @@ public:
     // View Task Dependencies
     void viewTaskDependencies(int taskId) const;
     
+    // Check if a user exists
+    bool userExists(int userId) const;
 };
 
 #endif

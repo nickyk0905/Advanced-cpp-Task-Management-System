@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cctype>
 #include <string>
 #include <stdexcept>
 
@@ -7,7 +8,10 @@
 #include "Project.h"
 #include "TaskManager.h"
 
+#include "operations/UserOperations.h"
+
 using namespace std;
+
 
 // Read integer input
 int readInt(const string& prompt)
@@ -38,8 +42,9 @@ int readInt(const string& prompt)
     }
 }
 
+
 // Read text input
-string readText(const string& prompt)
+string readText1(const string& prompt)
 {
     string input;
 
@@ -49,12 +54,14 @@ string readText(const string& prompt)
     return input;
 }
 
+
 // Wait for Enter before showing the menu
 void waitForKey()
 {
     cout << "\nPress Enter to continue...";
     cin.get();
 }
+
 
 int main()
 {
@@ -88,42 +95,52 @@ int main()
 
         choice = readInt("\nEnter your choice: ");
 
+        cout << "\n";
+
         try
         {
             switch (choice)
             {
+                // =================================
+                // CREATE USER
+                // =================================
+
                 case 1:
                 {
-                    int id = readInt("Enter User ID: ");
-
-                    string name = readText("Enter Name: ");
-                    string email = readText("Enter Email: ");
-
-                    User user(id, name, email);
-                    manager.createUser(user);
-
+                    manager.createUser();
                     break;
                 }
+
+
+                // =================================
+                // CREATE PROJECT
+                // =================================
 
                 case 2:
                 {
                     int id = readInt("Enter Project ID: ");
 
-                    string name = readText("Enter Project Name: ");
-                    string description = readText("Enter Description: ");
+                    string name = readText1("Enter Project Name: ");
+                    string description = readText1("Enter Description: ");
 
                     Project project(id, name, description);
+
                     manager.createProject(project);
 
                     break;
                 }
 
+
+                // =================================
+                // CREATE TASK
+                // =================================
+
                 case 3:
                 {
                     int id = readInt("Enter Task ID: ");
 
-                    string title = readText("Enter Task Title: ");
-                    string description = readText("Enter Description: ");
+                    string title = readText1("Enter Task Title: ");
+                    string description = readText1("Enter Description: ");
 
                     cout << "\nPriority:\n";
                     cout << "1. LOW\n";
@@ -159,8 +176,11 @@ int main()
                             );
                     }
 
-                    int userId = readInt("Enter Assigned User ID: ");
-                    int projectId = readInt("Enter Project ID: ");
+                    int userId =
+                        readInt("Enter Assigned User ID: ");
+
+                    int projectId =
+                        readInt("Enter Project ID: ");
 
                     manager.createTask(
                         id,
@@ -174,19 +194,33 @@ int main()
                     break;
                 }
 
+
+                // =================================
+                // ASSIGN TASK
+                // =================================
+
                 case 4:
                 {
-                    int taskId = readInt("Enter Task ID: ");
-                    int userId = readInt("Enter User ID: ");
+                    int taskId =
+                        readInt("Enter Task ID: ");
+
+                    int userId =
+                        readInt("Enter User ID: ");
 
                     manager.assignTask(taskId, userId);
 
                     break;
                 }
 
+
+                // =================================
+                // UPDATE TASK STATUS
+                // =================================
+
                 case 5:
                 {
-                    int taskId = readInt("Enter Task ID: ");
+                    int taskId =
+                        readInt("Enter Task ID: ");
 
                     cout << "\nStatus:\n";
                     cout << "1. TODO\n";
@@ -194,7 +228,8 @@ int main()
                     cout << "3. COMPLETED\n";
                     cout << "4. BLOCKED\n";
 
-                    int statusChoice = readInt("Choose Status: ");
+                    int statusChoice =
+                        readInt("Choose Status: ");
 
                     TaskStatus status;
 
@@ -222,76 +257,140 @@ int main()
                             );
                     }
 
-                    manager.updateTaskStatus(taskId, status);
+                    manager.updateTaskStatus(
+                        taskId,
+                        status
+                    );
 
                     break;
                 }
+
+
+                // =================================
+                // VIEW ALL TASKS
+                // =================================
 
                 case 6:
                     manager.viewTasks();
                     break;
 
+
+                // =================================
+                // SEARCH TASK
+                // =================================
+
                 case 7:
                 {
-                    int taskId = readInt("Enter Task ID: ");
+                    int taskId =
+                        readInt("Enter Task ID: ");
 
                     manager.searchTask(taskId);
 
                     break;
                 }
 
+
+                // =================================
+                // SORT TASKS BY ID
+                // =================================
+
                 case 8:
                     manager.sortTasksById();
                     break;
+
+
+                // =================================
+                // SHOW HIGH PRIORITY TASKS
+                // =================================
 
                 case 9:
                     manager.showHighPriorityTasks();
                     break;
 
+
+                // =================================
+                // DELETE TASK
+                // =================================
+
                 case 10:
                 {
-                    int taskId = readInt("Enter Task ID: ");
+                    int taskId =
+                        readInt("Enter Task ID: ");
 
                     manager.deleteTask(taskId);
 
                     break;
                 }
 
+
+                // =================================
+                // VIEW ALL USERS
+                // =================================
+
                 case 11:
                     manager.viewUsers();
                     break;
+
+
+                // =================================
+                // VIEW ALL PROJECTS
+                // =================================
 
                 case 12:
                     manager.viewProjects();
                     break;
 
+
+                // =================================
+                // ADD TASK DEPENDENCY
+                // =================================
+
                 case 13:
                 {
-                    int taskId = readInt("Enter Dependant Task ID: ");
-                    int dependencyTaskId = readInt("Enter Task ID: ");
+                    int taskId =
+                        readInt("Enter Dependant Task ID: ");
 
-                    manager.addTaskDependency(taskId, dependencyTaskId);
+                    int dependencyTaskId =
+                        readInt("Enter Task ID: ");
+
+                    manager.addTaskDependency(
+                        taskId,
+                        dependencyTaskId
+                    );
 
                     break;
                 }
 
+
+                // =================================
+                // VIEW TASK DEPENDENCIES
+                // =================================
+
                 case 14:
                 {
-                    int taskId = readInt("Enter Task ID: ");
+                    int taskId =
+                        readInt("Enter Task ID: ");
 
                     manager.viewTaskDependencies(taskId);
 
                     break;
                 }
 
+
+                // =================================
+                // EXIT
+                // =================================
+
                 case 0:
                     cout << "\nExiting Task Management System...\n";
                     break;
+
 
                 default:
                     cout << "Invalid choice. Please try again.\n";
             }
         }
+
         catch (const exception& e)
         {
             cout << "\nError: " << e.what() << '\n';

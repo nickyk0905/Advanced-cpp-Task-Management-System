@@ -1,4 +1,5 @@
 #include "User.h"
+#include "operations/UserOperations.h"
 
 #include <iostream>
 #include <stdexcept>
@@ -6,27 +7,17 @@
 using namespace std;
 
 // Constructor
-User::User(int userId, const string& name,
-           const string& email)
+User::User(int userId,
+           const string& name,
+           const string& email,
+           Role role,
+           bool isActive)
     : userId(userId),
       name(name),
-      email(email)
+      email(email),
+      role(role),
+      isActive(isActive)
 {
-    if (userId <= 0)
-    {
-        throw invalid_argument("User ID must be positive.\nUser not Created.");
-    }
-
-    if (name.empty())
-    {
-        throw invalid_argument("User name cannot be empty.\nUser not Created.");
-    }
-
-    if (email.empty() || email.find('@') == string::npos)
-    {
-        throw invalid_argument("Invalid email address.");
-    }
-
     cout << "\nUser created successfully!\n";
 }
 
@@ -52,26 +43,35 @@ const string& User::getEmail() const
     return email;
 }
 
-// Setters
-void User::setName(const string& newName)
+Role User::getRole() const
 {
-    if (newName.empty())
-    {
-        throw invalid_argument("Name cannot be empty.\nName not updated.");
-    }
-
-    name = newName;
+    return role;
 }
 
-void User::setEmail(const string& newEmail)
+bool User::getIsActive() const
 {
-    if (newEmail.empty() ||
-        newEmail.find('@') == string::npos)
-    {
-        throw invalid_argument("Invalid email address.\nEmail not updated.");
-    }
+    return isActive;
+}
 
-    email = newEmail;
+// Setters
+void User::setName()
+{
+    name = readText("Enter User Name: ");
+}
+
+void User::setEmail()
+{
+    email = readEmail("Enter User Email: ");
+}
+
+void User::setRole()
+{
+    role = readRole("Enter User Role (Admin, Manager, Developer, Tester): ");
+}
+
+void User::setIsActive()
+{
+    isActive = readActiveStatus("Is the User Active? (Yes/No): ");
 }
 
 // Display
@@ -82,4 +82,28 @@ void User::display() const
     cout << "\tUser ID: " << userId << '\n';
     cout << "\tName: " << name << '\n';
     cout << "\tEmail: " << email << '\n';
+
+    cout << "\tRole: ";
+
+    switch (role)
+    {
+        case Role::Admin:
+            cout << "Admin";
+            break;
+
+        case Role::Manager:
+            cout << "Manager";
+            break;
+
+        case Role::Developer:
+            cout << "Developer";
+            break;
+
+        case Role::Tester:
+            cout << "Tester";
+            break;
+    }
+
+    cout << '\n';
+    cout << "\tStatus: " << (isActive ? "Active" : "Inactive") << '\n';
 }

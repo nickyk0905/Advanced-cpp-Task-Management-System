@@ -1,4 +1,6 @@
 #include "TaskManager.h"
+#include "operations/UserOperations.h"
+#include "User.h"
 
 #include <iostream>
 #include <stdexcept>
@@ -20,16 +22,25 @@ TaskManager::~TaskManager()
 }
 
 // Create User
-void TaskManager::createUser(const User& user)
+void TaskManager::createUser()
 {
-    int id = user.getUserId();
+    cout << "----- CREATING A USER -----\n";
 
-    if (users.find(id) != users.end())
-    {
-        throw invalid_argument("\nUser ID already exists.");
-    }
+    int userId = readUserId("\nEnter User ID: ", *this);
+    string name = readText("\nEnter User Name: ");
+    string email = readEmail("\nEnter User Email: ");
+    Role role = readRole("\nEnter User Role (Admin, Manager, Developer, Tester): ");
+    bool isActive = readActiveStatus("\nIs the User Active? (Yes/No): ");
 
-    users.emplace(id, user);
+    User newUser(
+        userId,
+        name,
+        email,
+        role,
+        isActive
+    );
+
+    users.emplace(userId, newUser);
 
     cout << "\nUser added to Task Manager successfully!\n";
 }
@@ -341,4 +352,9 @@ void TaskManager::viewTaskDependencies(int taskId) const
     }
 
     cout << '\n';
+}
+
+bool TaskManager::userExists(int userId) const
+{
+    return users.find(userId) != users.end();
 }
