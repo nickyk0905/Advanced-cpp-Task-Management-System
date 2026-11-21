@@ -5,6 +5,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <vector>
+#include <limits>
 #include <algorithm>
 
 using namespace std;
@@ -375,18 +376,22 @@ void TaskManager::updateUser(int userId)
         switch(choice)
         {
             case 1:
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 users.at(userId).setName();
                 cout << "\nUser name updated successfully!\n";
                 break;
             case 2:
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 users.at(userId).setEmail();
                 cout << "\nUser email updated successfully!\n";
                 break;
             case 3:
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 users.at(userId).setRole();
                 cout << "\nUser role updated successfully!\n";
                 break;
             case 4:
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 users.at(userId).setIsActive();
                 cout << "\nUser active status updated successfully!\n";
                 break;
@@ -399,7 +404,7 @@ void TaskManager::updateUser(int userId)
         cout<<"\nDo you want to make another update? (Y/N): ";
         char cont;
         cin >> cont;
-        if (cont != 'Y' && cont != 'y')
+        if (cont == 'N' || cont == 'n')
         {
             break;
         }

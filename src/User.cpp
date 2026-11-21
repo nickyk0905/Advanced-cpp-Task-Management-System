@@ -56,22 +56,22 @@ bool User::getIsActive() const
 // Setters
 void User::setName()
 {
-    name = readText("Enter User Name: ");
+    name = readText("\nEnter User Name: ");
 }
 
 void User::setEmail()
 {
-    email = readEmail("Enter User Email: ");
+    email = readEmail("\nEnter User Email: ");
 }
 
 void User::setRole()
 {
-    role = readRole("Enter User Role (Admin, Manager, Developer, Tester): ");
+    role = readRole("\nEnter User Role (Admin, Manager, Developer, Tester): ");
 }
 
 void User::setIsActive()
 {
-    isActive = readActiveStatus("Is the User Active? (Yes/No): ");
+    isActive = readActiveStatus("\nIs the User Active? (Yes/No): ");
 }
 
 // Display

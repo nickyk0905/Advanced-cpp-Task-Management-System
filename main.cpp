@@ -331,13 +331,20 @@ int main()
                 case 11:
                 {
                     int userId;
-                    cout<<"Enter User ID to update: ";
-                    cin>>userId;
+                    while(true)                    
+                    {                        
+                        cout<<"Enter User ID to update: ";
+                        cin>>userId;
 
-                    if (!manager.userExists(userId))
-                    {
-                        cout << "\nError: User not found.\n";
-                        break;
+                        if (!manager.userExists(userId))
+                        {
+                            cout << "\nError: User not found.\n\n";
+                            continue;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
 
                     manager.updateUser(userId);
@@ -400,7 +407,9 @@ int main()
                 // =================================
 
                 case 0:
-                    cout << "\nExiting Task Management System...\n";
+                    cout<<"\n------------------------------------------------------------------------------------\n";
+                    cout << "\n\t\t\tExiting Task Management System...\n";
+                    cout<<"\n------------------------------------------------------------------------------------\n";
                     break;
 
 
