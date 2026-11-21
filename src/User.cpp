@@ -77,13 +77,13 @@ void User::setIsActive()
 // Display
 void User::display() const
 {
-    cout << "\n---------------------------- USER DETAILS --------------------------------\n";
+    cout << "\n---------------------------------------------- USER DETAILS -----------------------------------------\n";
 
-    cout << "\t\tUser ID: " << userId << '\n';
-    cout << "\t\tName: " << name << '\n';
-    cout << "\t\tEmail: " << email << '\n';
+    cout << "\t\t\tUser ID: " << userId << '\n';
+    cout << "\t\t\tName: " << name << '\n';
+    cout << "\t\t\tEmail: " << email << '\n';
 
-    cout << "\t\tRole: ";
+    cout << "\t\t\tRole: ";
 
     switch (role)
     {
@@ -105,5 +105,6 @@ void User::display() const
     }
 
     cout << '\n';
-    cout << "\t\tStatus: " << (isActive ? "Active" : "Inactive") << '\n';
+    cout << "\t\t\tStatus: " << (isActive ? "Active" : "Inactive") << '\n';
+    cout << "-----------------------------------------------------------------------------------------------------\n";
 }
