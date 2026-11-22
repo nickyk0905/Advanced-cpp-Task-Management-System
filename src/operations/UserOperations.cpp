@@ -315,8 +315,7 @@ bool readActiveStatus(const string& prompt)
         {
             return true;
         }
-
-        if (status == "No" || status == "no" || status == "N" || status == "n")
+        else
         {
             return false;
         }
