@@ -1,42 +1,68 @@
-
 #ifndef PROJECT_H
 #define PROJECT_H
 
+#include "Priority.h"
+
 #include <string>
-#include <vector>
+
+using namespace std;
+
+enum class ProjectStatus
+{
+    NotStarted,
+    InProgress,
+    OnHold,
+    Completed,
+    Cancelled
+};
 
 class Project
 {
 private:
     int projectId;
-    std::string projectName;
-    std::string description;
+    string projectName;
+    string description;
 
-    std::vector<int> taskIds;
+    ProjectStatus projectStatus;
+    Priority priority;
+
+    string startDate;
+    string endDate;
+
+    // User ID of the user who created the project
+    int createdBy;
 
 public:
-
-    // Constructor
     Project(int projectId,
-            const std::string& projectName,
-            const std::string& description);
+            const string& projectName,
+            const string& description,
+            ProjectStatus projectStatus,
+            Priority priority,
+            const string& startDate,
+            const string& endDate,
+            int createdBy);
 
-    // Destructor
     ~Project();
 
     // Getters
     int getProjectId() const;
-    const std::string& getProjectName() const;
-    const std::string& getDescription() const;
-    const std::vector<int>& getTaskIds() const;
+    const string& getProjectName() const;
+    const string& getDescription() const;
+    ProjectStatus getProjectStatus() const;
+    Priority getPriority() const;
+    const string& getStartDate() const;
+    const string& getEndDate() const;
+    int getCreatedBy() const;
 
-    // Task management
-    void addTask(int taskId);
+    // Setters
+    void setProjectName();
+    void setDescription();
+    void setProjectStatus();
+    void setPriority();
+    void setStartDate();
+    void setEndDate();
 
-    // Remove a task
-    void removeTask(int taskId);
-
-    // Display
+    // Display project details
     void display() const;
 };
 

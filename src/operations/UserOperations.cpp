@@ -19,7 +19,7 @@ int readUserId(const string& prompt, TaskManager& manager)
 
         if (input.empty())
         {
-            cout << "\nUser ID cannot be empty.\n";
+            cout << "\nError: User ID cannot be empty.\n";
             continue;
         }
 
@@ -31,21 +31,21 @@ int readUserId(const string& prompt, TaskManager& manager)
             // Integer check
             if (position != input.length())
             {
-                cout << "\nUser ID must be a valid integer.\n";
+                cout << "\nError: User ID must be a valid integer.\n";
                 continue;
             }
 
             // Positive check
             if (id <= 0)
             {
-                cout << "\nUser ID must be greater than 0.\n";
+                cout << "\nError: User ID must be greater than 0.\n";
                 continue;
             }
 
             // Unique ID check
             if (manager.userExists(id))
             {
-                cout << "\nUser ID already exists.\n";
+                cout << "\nError: User ID already exists.\n";
                 continue;
             }
 

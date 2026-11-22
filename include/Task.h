@@ -2,16 +2,10 @@
 #ifndef TASK_H
 #define TASK_H
 
+#include "Priority.h"
+
 #include <string>
 #include <vector>
-
-enum class Priority
-{
-    LOW,
-    MEDIUM,
-    HIGH,
-    CRITICAL
-};
 
 enum class TaskStatus
 {

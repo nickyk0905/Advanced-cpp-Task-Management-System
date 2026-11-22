@@ -141,20 +141,20 @@ void Task::display() const
 
     switch (priority)
     {
-        case Priority::LOW:
-            cout << "LOW";
+        case Priority::Low:
+            cout << "Low";
             break;
 
-        case Priority::MEDIUM:
-            cout << "MEDIUM";
+        case Priority::Medium:
+            cout << "Medium";
             break;
 
-        case Priority::HIGH:
-            cout << "HIGH";
+        case Priority::High:
+            cout << "High";
             break;
 
-        case Priority::CRITICAL:
-            cout << "CRITICAL";
+        case Priority::Critical:
+            cout << "Critical";
             break;
     }
 

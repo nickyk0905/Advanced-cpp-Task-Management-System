@@ -1,4 +1,3 @@
-
 #ifndef TASKMANAGER_H
 #define TASKMANAGER_H
 
@@ -9,14 +8,16 @@
 #include "Project.h"
 #include "Task.h"
 
+using namespace std;
+
 class TaskManager
 {
 private:
 
     // Storage for application objects
-    std::unordered_map<int, User> users;
-    std::unordered_map<int, Project> projects;
-    std::unordered_map<int, Task> tasks;
+    unordered_map<int, User> users;
+    unordered_map<int, Project> projects;
+    unordered_map<int, Task> tasks;
 
 public:
 
@@ -30,7 +31,7 @@ public:
     void createUser();
 
     // Project management
-    void createProject(const Project& project);
+    void createProject();
 
     // Task management
     void createTask(
@@ -76,6 +77,9 @@ public:
     
     // Check if a user exists
     bool userExists(int userId) const;
+
+    // Check if a project exists
+    bool projectExists(int projectId) const;
 };
 
 #endif

@@ -1,5 +1,7 @@
 #include "TaskManager.h"
 #include "operations/UserOperations.h"
+#include "operations/ProjectOperations.h"
+#include "operations/TaskOperations.h"
 #include "User.h"
 
 #include <iostream>
@@ -48,18 +50,54 @@ void TaskManager::createUser()
 }
 
 // Create Project
-void TaskManager::createProject(const Project& project)
+void TaskManager::createProject()
 {
-    int id = project.getProjectId();
+    cout << "\n-------- CREATING A PROJECT --------\n";
 
-    if (projects.find(id) != projects.end())
+    int projectId = readProjectId("\nEnter Project ID: ", *this);
+
+    string projectName =
+        readProjectName("\nEnter Project Name: ");
+
+    string description =
+        readProjectDescription("\nEnter Project Description: ");
+
+    ProjectStatus projectStatus =
+        readProjectStatus("\nEnter Project Status (NotStarted, InProgress, OnHold, Completed, Cancelled): ");
+
+    Priority priority =
+        readPriority("\nEnter Project Priority (Low, Medium, High, Critical): ");
+
+    string startDate =
+        readDate("\nEnter Project Start Date (DD-MM-YYYY): ");
+
+    string endDate =
+        readDate("\nEnter Project End Date (DD-MM-YYYY): ");
+
+    int createdBy =
+        readCreatedBy("\nEnter Created By User ID: ", *this);
+
+    Project project(
+        projectId,
+        projectName,
+        description,
+        projectStatus,
+        priority,
+        startDate,
+        endDate,
+        createdBy
+    );
+
+    if (projects.find(projectId) != projects.end())
     {
         throw invalid_argument("\nProject ID already exists.");
     }
 
-    projects.emplace(id, project);
+    projects.emplace(projectId, project);
 
-    cout << "\nProject added to Task Manager successfully!\n";
+    cout<<"\n--------------------------------------------------------------------------\n";
+    cout << "\n\t\tProject added to Task Manager successfully!\n";
+    cout<<"\n--------------------------------------------------------------------------";
 }
 
 // Create Task
@@ -87,9 +125,7 @@ void TaskManager::createTask(
     {
         throw invalid_argument("\nProject does not exist.");
     }
-
-    // Add task ID to the associated project
-    project->second.addTask(id);
+    
 
     try
     {
@@ -107,8 +143,7 @@ void TaskManager::createTask(
     }
     catch (...)
     {
-        // Roll back project association if task creation fails
-        project->second.removeTask(id);
+        
         throw;
     }
 
@@ -167,9 +202,6 @@ void TaskManager::deleteTask(int taskId)
     {
         throw logic_error("Associated project does not exist.");
     }
-
-    // Remove task ID from project before deleting the task
-    project->second.removeTask(taskId);
 
     tasks.erase(task);
 
@@ -284,8 +316,8 @@ void TaskManager::showHighPriorityTasks() const
     // Filter HIGH and CRITICAL priority tasks
     for (const auto& entry : tasks)
     {
-        if (entry.second.getPriority() == Priority::HIGH ||
-            entry.second.getPriority() == Priority::CRITICAL)
+        if (entry.second.getPriority() == Priority::High ||
+            entry.second.getPriority() == Priority::Critical)
         {
             highPriorityTasks.push_back(&entry.second);
         }
@@ -416,4 +448,10 @@ void TaskManager::updateUser(int userId)
 bool TaskManager::userExists(int userId) const
 {
     return users.find(userId) != users.end();
+}
+
+
+bool TaskManager::projectExists(int projectId) const
+{
+    return projects.find(projectId) != projects.end();
 }

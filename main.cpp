@@ -118,16 +118,8 @@ int main()
                 // =================================
 
                 case 2:
-                {
-                    int id = readInt("Enter Project ID: ");
-
-                    string name = readText1("Enter Project Name: ");
-                    string description = readText1("Enter Description: ");
-
-                    Project project(id, name, description);
-
-                    manager.createProject(project);
-
+                {                
+                    manager.createProject();
                     break;
                 }
 
@@ -156,19 +148,19 @@ int main()
                     switch (priorityChoice)
                     {
                         case 1:
-                            priority = Priority::LOW;
+                            priority = Priority::Low;
                             break;
 
                         case 2:
-                            priority = Priority::MEDIUM;
+                            priority = Priority::Medium;
                             break;
 
                         case 3:
-                            priority = Priority::HIGH;
+                            priority = Priority::High;
                             break;
 
                         case 4:
-                            priority = Priority::CRITICAL;
+                            priority = Priority::Critical;
                             break;
 
                         default:

@@ -1,8 +1,7 @@
-#include "User.h"
 #include "operations/UserOperations.h"
+#include "User.h"
 
 #include <iostream>
-#include <stdexcept>
 
 using namespace std;
 
