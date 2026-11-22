@@ -455,3 +455,84 @@ bool TaskManager::projectExists(int projectId) const
 {
     return projects.find(projectId) != projects.end();
 }
+
+
+void TaskManager::updateProject(int projectId)
+{
+    cout << "------------------------- UPDATE PROJECT INFO ------------------------------\n";
+    cout << "\nProject ID: " << projectId << '\n';
+    cout << "-----------------------------------------------------------------------\n";
+
+    while (true)
+    {
+        cout << "1. Update Project Name\n";
+        cout << "2. Update Description\n";
+        cout << "3. Update Project Status\n";
+        cout << "4. Update Priority\n";
+        cout << "5. Update Start Date\n";
+        cout << "6. Update End Date\n";
+        cout << "0. Exit Update\n";
+
+        int choice;
+        cout << "\nEnter your choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+            case 1:
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                projects.at(projectId).setProjectName();
+                cout << "\nProject name updated successfully!\n";
+                break;
+
+            case 2:
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                projects.at(projectId).setDescription();
+                cout << "\nProject description updated successfully!\n";
+                break;
+
+            case 3:
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                projects.at(projectId).setProjectStatus();
+                cout << "\nProject status updated successfully!\n";
+                break;
+
+            case 4:
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                projects.at(projectId).setPriority();
+                cout << "\nProject priority updated successfully!\n";
+                break;
+
+            case 5:
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                projects.at(projectId).setStartDate();
+                cout << "\nProject start date updated successfully!\n";
+                break;
+
+            case 6:
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                projects.at(projectId).setEndDate();
+                cout << "\nProject end date updated successfully!\n";
+                break;
+
+            case 0:
+                cout << "\nExiting project update...\n";
+                return;
+
+            default:
+                cout << "\nError: Invalid choice. Please try again.\n";
+        }
+
+        cout << "\nDo you want to make another update? (Y/N): ";
+
+        char cont;
+        cin >> cont;
+
+        if (cont != 'Y' && cont != 'y')
+        {
+            break;
+        }
+    }
+
+    cout << "-----------------------------------------------------------------------\n";
+}

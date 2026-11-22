@@ -88,10 +88,11 @@ int main()
         cout << "9. Show High Priority Tasks\n";
         cout << "10. Delete Task\n";
         cout << "11. Update User Info\n";
-        cout << "12. View All Users\n";
-        cout << "13. View All Projects\n";
-        cout << "14. Add Task Dependency\n";
-        cout << "15. View Task Dependencies\n";
+        cout << "12. Update Project Details\n";
+        cout << "13. View All Users\n";
+        cout << "14. View All Projects\n";
+        cout << "15. Add Task Dependency\n";
+        cout << "16. View Task Dependencies\n";
         cout << "0. Exit\n";
 
         choice = readInt("\nEnter your choice: ");
@@ -345,6 +346,30 @@ int main()
 
 
                 case 12:
+                {
+                    int projectId;
+                    while(true)                    
+                    {                        
+                        cout<<"Enter Project ID to update: ";
+                        cin>>projectId;
+
+                        if (!manager.projectExists(projectId))
+                        {
+                            cout << "\nError: Project not found.\n\n";
+                            continue;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+
+                    manager.updateProject(projectId);
+                    break;
+                }
+
+
+                case 13:
                     manager.viewUsers();
                     break;
 
@@ -353,7 +378,7 @@ int main()
                 // VIEW ALL PROJECTS
                 // =================================
 
-                case 13:
+                case 14:
                     manager.viewProjects();
                     break;
 
@@ -362,7 +387,7 @@ int main()
                 // ADD TASK DEPENDENCY
                 // =================================
 
-                case 14:
+                case 15:
                 {
                     int taskId =
                         readInt("Enter Dependant Task ID: ");
@@ -383,7 +408,7 @@ int main()
                 // VIEW TASK DEPENDENCIES
                 // =================================
 
-                case 15:
+                case 16:
                 {
                     int taskId =
                         readInt("Enter Task ID: ");

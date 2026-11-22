@@ -66,6 +66,9 @@ public:
     // Update User
     void updateUser(int userId);
 
+    // Update Project
+    void updateProject(int projectId);
+
     // User retrieval
     void viewUsers() const;
 

@@ -153,11 +153,11 @@ ProjectStatus readProjectStatus(const string& prompt)
         {
             return ProjectStatus::NotStarted;
         }
-        else if (input == "InProgress" || input == "inprogress")
+        else if (input == "In Progress" || input == "in progress")
         {
             return ProjectStatus::InProgress;
         }
-        else if (input == "OnHold" || input == "onhold")
+        else if (input == "On Hold" || input == "on hold")
         {
             return ProjectStatus::OnHold;
         }
@@ -344,9 +344,9 @@ int readCreatedBy(const string& prompt, TaskManager& manager)
                     choice == "Y" || choice == "y")
                 {
                     manager.createUser();
+                    cout<<"\n";
                 }
-                else if (choice == "No" || choice == "no" ||
-                         choice == "N" || choice == "n")
+                else
                 {
                     continue;
                 }

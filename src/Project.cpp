@@ -91,7 +91,7 @@ void Project::setDescription()
 
 void Project::setProjectStatus()
 {
-    projectStatus = readProjectStatus("\nEnter Project Status (NotStarted, InProgress, OnHold, Completed, Cancelled): ");
+    projectStatus = readProjectStatus("\nEnter Project Status (Not Started, In Progress, On Hold, Completed, Cancelled): ");
 }
 
 void Project::setPriority()
