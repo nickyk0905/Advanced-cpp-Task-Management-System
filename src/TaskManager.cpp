@@ -63,16 +63,27 @@ void TaskManager::createProject()
         readProjectDescription("\nEnter Project Description: ");
 
     ProjectStatus projectStatus =
-        readProjectStatus("\nEnter Project Status (NotStarted, InProgress, OnHold, Completed, Cancelled): ");
+        readProjectStatus("\nEnter Project Status (NotStarted, InProgress): ");
 
     Priority priority =
         readPriority("\nEnter Project Priority (Low, Medium, High, Critical): ");
 
-    string startDate =
-        readDate("\nEnter Project Start Date (DD-MM-YYYY): ");
+    string startDate = readDate("\nEnter Project Start Date (DD-MM-YYYY): ");
 
-    string endDate =
-        readDate("\nEnter Project End Date (DD-MM-YYYY): ");
+    string endDate;
+
+    while (true)
+    {
+        endDate = readDate("\nEnter Project End Date (DD-MM-YYYY): ");
+
+        if (convertDateToNumber(endDate) >
+            convertDateToNumber(startDate))
+        {
+            break;
+        }
+
+        cout << "\nError: End date must be later than start date.\n";
+    }
 
     int createdBy =
         readCreatedBy("\nEnter Created By User ID: ", *this);
@@ -504,16 +515,49 @@ void TaskManager::updateProject(int projectId)
                 break;
 
             case 5:
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                projects.at(projectId).setStartDate();
+            {
+                while(true)
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    string newStartDate = readDate("\nEnter New Start Date (DD-MM-YYYY): ");
+
+                    if (convertDateToNumber(newStartDate) >=
+                        convertDateToNumber(projects.at(projectId).getEndDate()))
+                    {
+                        cout << "\nError: Start date must be earlier than end date.\n";
+                        continue;
+                    }
+
+                    // Assign the validated date
+                projects.at(projectId).setStartDate(newStartDate);
+                }
+
                 cout << "\nProject start date updated successfully!\n";
                 break;
+            }
 
-            case 6:
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                projects.at(projectId).setEndDate();
+            case 6:                
+            {
+                while(true)
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    string newEndDate = readDate("\nEnter New End Date (DD-MM-YYYY): ");
+
+                    if (convertDateToNumber(newEndDate) <=
+                        convertDateToNumber(projects.at(projectId).getStartDate()))
+                    {
+                        cout << "\nError: End date must be later than start date.\n";
+                        break;
+                    }
+
+                    projects.at(projectId).setEndDate(newEndDate);
+                }
+                
                 cout << "\nProject end date updated successfully!\n";
                 break;
+            }
 
             case 0:
                 cout << "\nExiting project update...\n";

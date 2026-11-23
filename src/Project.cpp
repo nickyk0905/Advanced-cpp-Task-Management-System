@@ -91,7 +91,7 @@ void Project::setDescription()
 
 void Project::setProjectStatus()
 {
-    projectStatus = readProjectStatus("\nEnter Project Status (Not Started, In Progress, On Hold, Completed, Cancelled): ");
+    projectStatus = readProjectStatus_update("\nEnter Project Status (Not Started, In Progress, On Hold, Completed, Cancelled): ");
 }
 
 void Project::setPriority()
@@ -99,14 +99,14 @@ void Project::setPriority()
     priority = readPriority("\nEnter Project Priority (Low, Medium, High, Critical): ");
 }
 
-void Project::setStartDate()
+void Project::setStartDate(const string& date)
 {
-    startDate = readDate("\nEnter Project Start Date: ");
+    startDate = date;
 }
 
-void Project::setEndDate()
+void Project::setEndDate(const string& date)
 {
-    endDate = readDate("\nEnter Project End Date: ");
+    endDate = date;
 }
 
 

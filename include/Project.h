@@ -59,8 +59,8 @@ public:
     void setDescription();
     void setProjectStatus();
     void setPriority();
-    void setStartDate();
-    void setEndDate();
+    void setStartDate(const string& date);
+    void setEndDate(const string& date);
 
     // Display project details
     void display() const;

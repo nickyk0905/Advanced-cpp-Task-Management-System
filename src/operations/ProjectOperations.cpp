@@ -157,6 +157,35 @@ ProjectStatus readProjectStatus(const string& prompt)
         {
             return ProjectStatus::InProgress;
         }
+
+        cout << "\nError: Invalid project status.\n";
+    }
+}
+
+
+ProjectStatus readProjectStatus_update(const string& prompt)
+{
+    while (true)
+    {
+        cout << prompt;
+
+        string input;
+        getline(cin, input);
+
+        if(input.empty())
+        {
+          cout<<"\nError: Project Status cannot be empty.\n";
+          continue;
+        }
+
+        if (input == "Not Started" || input == "not started")
+        {
+            return ProjectStatus::NotStarted;
+        }
+        else if (input == "In Progress" || input == "in progress")
+        {
+            return ProjectStatus::InProgress;
+        }
         else if (input == "On Hold" || input == "on hold")
         {
             return ProjectStatus::OnHold;
@@ -363,4 +392,13 @@ int readCreatedBy(const string& prompt, TaskManager& manager)
             cout << "\nError: Created By User ID is out of range.\n";
         }
     }
+}
+
+int convertDateToNumber(const string& date)
+{
+    int day = stoi(date.substr(0, 2));
+    int month = stoi(date.substr(3, 2));
+    int year = stoi(date.substr(6, 4));
+
+    return (year * 10000) + (month * 100) + day;
 }
