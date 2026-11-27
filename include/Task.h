@@ -1,26 +1,34 @@
-
 #ifndef TASK_H
 #define TASK_H
 
-#include "Priority.h"
-
+#include <iostream>
 #include <string>
 #include <vector>
+#include <stdexcept>
+
+#include "Priority.h"
+
+using namespace std;
+
+class TaskManager;
 
 enum class TaskStatus
 {
     TODO,
     IN_PROGRESS,
+    BLOCKED,
+    ON_HOLD,
     COMPLETED,
-    BLOCKED
+    CANCELLED
 };
 
 class Task
 {
 private:
-    int id;
-    std::string title;
-    std::string description;
+    int taskId;
+
+    string taskName;
+    string description;
 
     Priority priority;
     TaskStatus status;
@@ -28,24 +36,31 @@ private:
     int assignedUserId;
     int projectId;
 
-    std::vector<int> dependencies;
+    string createdDate;
+    string dueDate;
+    string completedDate;
+
+    vector<int> dependencies;
 
 public:
 
     // Constructor
-    Task(int id, const std::string& title,
-         const std::string& description,
+    Task(int taskId,
+         const string& taskName,
+         const string& description,
          Priority priority,
          int assignedUserId,
-         int projectId);
+         int projectId,
+         const string& createdDate,
+         const string& dueDate);
 
     // Destructor
     ~Task();
 
     // Getters
     int getId() const;
-    const std::string& getTitle() const;
-    const std::string& getDescription() const;
+    string getTaskName() const;
+    string getDescription() const;
 
     Priority getPriority() const;
     TaskStatus getStatus() const;
@@ -53,16 +68,22 @@ public:
     int getAssignedUserId() const;
     int getProjectId() const;
 
-    const std::vector<int>& getDependencies() const;
+    string getCreatedDate() const;
+    string getDueDate() const;
+    string getCompletedDate() const;
+
+    const vector<int>& getDependencies() const;
 
     // Setters
-    void setStatus(TaskStatus newStatus);
-    void setPriority(Priority newPriority);
-    void setAssignedUserId(int userId);
+    void setTaskName();
+    void setDescription();
+    void setPriority();
+    void setStatus();
+    void setAssignedUserId();
+    void setDueDate();
 
-    // Dependency management
+    // Dependency Management
     void addDependency(int taskId);
-
     // Display
     void display() const;
 };

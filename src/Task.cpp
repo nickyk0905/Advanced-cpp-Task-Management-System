@@ -1,4 +1,8 @@
 #include "Task.h"
+#include "TaskManager.h"
+#include "operations/TaskOperations.h"
+#include "operations/ProjectOperations.h"
+#include "operations/UserOperations.h"
 
 #include <iostream>
 #include <algorithm>
@@ -6,32 +10,30 @@
 
 using namespace std;
 
+TaskManager manager;
+
 // Constructor
-Task::Task(int id, const string& title,
+Task::Task(int taskId, const string& taskName,
            const string& description,
            Priority priority,
            int assignedUserId,
-           int projectId)
-    : id(id),
-      title(title),
+           int projectId,
+           const string& createdDate,
+           const string& dueDate)
+    : taskId(taskId),
+      taskName(taskName),
       description(description),
       priority(priority),
       status(TaskStatus::TODO),
       assignedUserId(assignedUserId),
-      projectId(projectId)
+      projectId(projectId),
+      createdDate(createdDate),
+      dueDate(dueDate),
+      completedDate("")
 {
-    if (id <= 0 || assignedUserId <= 0 || projectId <= 0)
-    {
-        throw invalid_argument("IDs must be positive.\nTask not Created.");
-    }
-
-    if (title.empty())
-    {
-        throw invalid_argument("Task title cannot be empty.\nTask not Created.");
-    }
-
     cout << "\nTask created successfully!\n";
 }
+
 
 // Destructor
 Task::~Task()
@@ -39,18 +41,19 @@ Task::~Task()
     // Destructor logic (if needed)
 }
 
+
 // Getters
 int Task::getId() const
 {
-    return id;
+    return taskId;
 }
 
-const string& Task::getTitle() const
+string Task::getTaskName() const
 {
-    return title;
+    return taskName;
 }
 
-const string& Task::getDescription() const
+string Task::getDescription() const
 {
     return description;
 }
@@ -75,54 +78,90 @@ int Task::getProjectId() const
     return projectId;
 }
 
+string Task::getCreatedDate() const
+{
+    return createdDate;
+}
+
+string Task::getDueDate() const
+{
+    return dueDate;
+}
+
+string Task::getCompletedDate() const
+{
+    return completedDate;
+}
+
 const vector<int>& Task::getDependencies() const
 {
     return dependencies;
 }
 
+
 // Setters
-void Task::setStatus(TaskStatus newStatus)
+
+// Set Task Name
+void Task::setTaskName()
 {
-    status = newStatus;
+    taskName = readText("\nEnter new task name: ");
 }
 
-void Task::setPriority(Priority newPriority)
+// Set Description
+void Task::setDescription()
 {
-    priority = newPriority;
+    description = readDescription("\nEnter new task description: ");
 }
 
-void Task::setAssignedUserId(int userId)
+// Set Priority
+void Task::setPriority()
 {
-    if (userId <= 0)
-    {
-        throw invalid_argument("Invalid user ID.\nUser not assigned.");
-    }
-
-    assignedUserId = userId;
+    priority = readPriority("\nEnter new task priority (Low, Medium, High, Critical): ");
 }
 
-// Add dependency
+// Set Status
+void Task::setStatus()
+{
+    status = readTaskStatus("\nEnter new task status: ");
+}
+
+// Set Assigned User ID
+void Task::setAssignedUserId()
+{
+    assignedUserId = readUserId("\nEnter new assigned user ID: ", manager);
+}
+
+// Set Due Date
+void Task::setDueDate()
+{
+    dueDate = readDate("\nEnter new due date: ");
+}
+
+
+// Add Dependency
 void Task::addDependency(int taskId)
 {
     if (taskId <= 0)
     {
-        throw invalid_argument("Invalid dependency ID.\nDependency not added.");
+        throw invalid_argument("Invalid dependency task ID.");
     }
 
-    if (taskId == id)
+    if (taskId == this->taskId)
     {
-        throw invalid_argument("A task cannot depend on itself.\nDependency not added.");
+        throw invalid_argument("A task cannot depend on itself.");
     }
 
-    if (find(dependencies.begin(),
-             dependencies.end(),
-             taskId) != dependencies.end())
+    for (int dependencyId : dependencies)
     {
-        throw invalid_argument("Dependency already exists.\nDependency not added.");
+        if (dependencyId == taskId)
+        {
+            throw invalid_argument("Dependency already exists.");
+        }
     }
 
     dependencies.push_back(taskId);
 }
+
 
 // Display task details
 
@@ -130,8 +169,8 @@ void Task::display() const
 {
     cout << "\n----- TASK DETAILS -----\n";
 
-    cout << "\tTask ID: " << id << '\n';
-    cout << "\tTitle: " << title << '\n';
+    cout << "\tTask ID: " <<taskId << '\n';
+    cout << "\tTitle: " << taskName << '\n';
     cout << "\tDescription: " << description << '\n';
     cout << "\tAssigned User ID: " << assignedUserId << '\n';
     cout << "\tProject ID: " << projectId << '\n';
@@ -160,8 +199,11 @@ void Task::display() const
 
     cout << '\n';
 
+    cout<<"\tTask Start Date: "<<createdDate;
+    cout<<"\n\tTask Due Date: "<<dueDate;
+
     // Display Status
-    cout << "\tStatus: ";
+    cout << "\n\tProject Status: ";
 
     switch (status)
     {
@@ -179,6 +221,14 @@ void Task::display() const
 
         case TaskStatus::BLOCKED:
             cout << "BLOCKED";
+            break;
+
+        case TaskStatus::ON_HOLD:
+            cout << "ON_HOLD";
+            break;
+
+        case TaskStatus::CANCELLED:
+            cout << "CANCELLED";
             break;
     }
 

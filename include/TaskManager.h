@@ -34,23 +34,16 @@ public:
     void createProject();
 
     // Task management
-    void createTask(
-        int id,
-        const std::string& title,
-        const std::string& description,
-        Priority priority,
-        int assignedUserId,
-        int projectId
-    );
+    void createTask();
 
     // Assignment
-    void assignTask(int taskId, int userId);
+    void assignTask(int taskId);
 
     // Adding Task Dependency
     void addTaskDependency(int taskId, int dependencyTaskId);
 
     // Task operations
-    void updateTaskStatus(int taskId, TaskStatus status);
+    void updateTaskStatus(int taskId);
     void deleteTask(int taskId);
 
     // Retrieval
@@ -83,6 +76,12 @@ public:
 
     // Check if a project exists
     bool projectExists(int projectId) const;
+
+    // Check if a task exists
+    bool taskExists(int taskId) const;
+
+    // To get Project Details
+    Project* getProject(int projectId);
 };
 
 #endif

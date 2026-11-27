@@ -65,7 +65,7 @@ int readUserId(const string& prompt, TaskManager& manager)
 
 
 // Read text input
-string readText(const string& prompt)
+string readName(const string& prompt)
 {
     string input;
 
@@ -93,6 +93,7 @@ string readText(const string& prompt)
         }
     }
 }
+
 
 
 // Read email input

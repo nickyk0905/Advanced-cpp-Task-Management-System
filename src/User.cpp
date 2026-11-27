@@ -55,7 +55,7 @@ bool User::getIsActive() const
 // Setters
 void User::setName()
 {
-    name = readText("\nEnter User Name: ");
+    name = readName("\nEnter User Name: ");
 }
 
 void User::setEmail()

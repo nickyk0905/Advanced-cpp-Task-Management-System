@@ -9,8 +9,8 @@ using namespace std;
 
 int readProjectId(const string& prompt, TaskManager& manager);
 int readCreatedBy(const string& prompt, TaskManager& manager);
-string readProjectName(const string& prompt);
-string readProjectDescription(const string& prompt);
+string readText(const string& prompt);
+string readDescription(const string& prompt);
 ProjectStatus readProjectStatus(const string& prompt);
 ProjectStatus readProjectStatus_update(const string& prompt);
 Priority readPriority(const string& prompt);

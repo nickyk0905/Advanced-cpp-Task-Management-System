@@ -30,7 +30,7 @@ void TaskManager::createUser()
     cout << "------------------------- CREATING A USER ------------------------------\n";
 
     int userId = readUserId("\nEnter User ID: ", *this);
-    string name = readText("\nEnter User Name: ");
+    string name = readName("\nEnter User Name: ");
     string email = readEmail("\nEnter User Email: ");
     Role role = readRole("\nEnter User Role (Admin, Manager, Developer, Tester): ");
     bool isActive = readActiveStatus("\nIs the User Active? (Yes/No): ");
@@ -46,24 +46,24 @@ void TaskManager::createUser()
     users.emplace(userId, newUser);
     cout<<"\n--------------------------------------------------------------------------\n";
     cout << "\n\t\tUser added to Task Manager successfully!\n";
-    cout<<"\n--------------------------------------------------------------------------";
+    cout<<"\n--------------------------------------------------------------------------\n";
 }
 
 // Create Project
 void TaskManager::createProject()
 {
-    cout << "\n-------- CREATING A PROJECT --------\n";
+    cout << "------------------------- CREATING A PROJECT ------------------------------\n";
 
     int projectId = readProjectId("\nEnter Project ID: ", *this);
 
     string projectName =
-        readProjectName("\nEnter Project Name: ");
+        readName("\nEnter Project Name: ");
 
     string description =
-        readProjectDescription("\nEnter Project Description: ");
+        readDescription("\nEnter Project Description: ");
 
     ProjectStatus projectStatus =
-        readProjectStatus("\nEnter Project Status (NotStarted, InProgress): ");
+        readProjectStatus("\nEnter Project Status (Not Started, In Progress): ");
 
     Priority priority =
         readPriority("\nEnter Project Priority (Low, Medium, High, Critical): ");
@@ -108,61 +108,66 @@ void TaskManager::createProject()
 
     cout<<"\n--------------------------------------------------------------------------\n";
     cout << "\n\t\tProject added to Task Manager successfully!\n";
-    cout<<"\n--------------------------------------------------------------------------";
+    cout<<"\n--------------------------------------------------------------------------\n";
 }
+
 
 // Create Task
-void TaskManager::createTask(
-    int id,
-    const string& title,
-    const string& description,
-    Priority priority,
-    int assignedUserId,
-    int projectId)
+void TaskManager::createTask()
 {
-    if (tasks.find(id) != tasks.end())
-    {
-        throw invalid_argument("\nTask ID already exists.");
-    }
+    cout << "------------------------- CREATING A TASK ------------------------------\n";
 
-    if (users.find(assignedUserId) == users.end())
-    {
-        throw invalid_argument("\nAssigned user does not exist.");
-    }
+    int taskId = readTaskId("\nEnter Task ID: ", *this);
 
-    auto project = projects.find(projectId);
+    string taskName = readText("\nEnter Task Title: ");
+    string description = readDescription("\nEnter Task Description: ");
 
-    if (project == projects.end())
-    {
-        throw invalid_argument("\nProject does not exist.");
-    }
-    
+    Priority priority = readPriority(
+        "\nEnter Task Priority (Low, Medium, High, Critical): "
+    );
 
-    try
-    {
-        // Create Task and store it in the unordered_map
-        Task task(
-            id,
-            title,
-            description,
-            priority,
-            assignedUserId,
-            projectId
-        );
+    int assignedUserId = -1;
 
-        tasks.emplace(id, task);
-    }
-    catch (...)
-    {
-        
-        throw;
-    }
+    int projectId = readProjectId_T(
+        "\nEnter Project ID: ", *this
+    );
 
-    cout << "\nTask added to Task Manager successfully!\n";
+    Project* project = getProject(projectId);
+    string projectStartDate = project->getStartDate();
+    string projectEndDate = project->getEndDate();
+
+    cout << "\nProject Timeline";
+    cout << "\nProject Start Date: " << projectStartDate;
+    cout << "\nProject End Date: " << projectEndDate << "\n";
+
+    string createdDate = readStartDate("\nEnter Created Date (DD-MM-YYYY): ", projectStartDate, projectEndDate);
+    string dueDate = readEndDate("\nEnter Due Date (DD-MM-YYYY): ", createdDate, projectEndDate);
+
+    // Create Task object
+    Task task(
+        taskId,
+        taskName,
+        description,
+        priority,
+        assignedUserId,
+        projectId,
+        createdDate,
+        dueDate
+    );
+
+    // Add Task to Task Manager
+    tasks.emplace(taskId, task);
+
+    cout << "\n--------------------------------------------------------------------------\n";
+    cout << "\n\t\tTask added to Task Manager successfully!\n";
+    cout << "\n--------------------------------------------------------------------------\n";
 }
 
+
+
+
 // Assign Task
-void TaskManager::assignTask(int taskId, int userId)
+void TaskManager::assignTask(int taskId)
 {
     auto task = tasks.find(taskId);
 
@@ -171,18 +176,13 @@ void TaskManager::assignTask(int taskId, int userId)
         throw invalid_argument("Task not found.");
     }
 
-    if (users.find(userId) == users.end())
-    {
-        throw invalid_argument("User not found.");
-    }
-
-    task->second.setAssignedUserId(userId);
+    task->second.setAssignedUserId();
 
     cout << "\nTask assigned successfully!\n";
 }
 
 // Update Task Status
-void TaskManager::updateTaskStatus(int taskId, TaskStatus status)
+void TaskManager::updateTaskStatus(int taskId)
 {
     auto task = tasks.find(taskId);
 
@@ -190,8 +190,6 @@ void TaskManager::updateTaskStatus(int taskId, TaskStatus status)
     {
         throw invalid_argument("Task not found.");
     }
-
-    task->second.setStatus(status);
 
     cout << "\nTask status updated successfully!\n";
 }
@@ -468,6 +466,13 @@ bool TaskManager::projectExists(int projectId) const
 }
 
 
+// Check whether Task ID exists
+bool TaskManager::taskExists(int taskId) const
+{
+    return tasks.find(taskId) != tasks.end();
+}
+
+
 void TaskManager::updateProject(int projectId)
 {
     cout << "------------------------- UPDATE PROJECT INFO ------------------------------\n";
@@ -579,4 +584,15 @@ void TaskManager::updateProject(int projectId)
     }
 
     cout << "-----------------------------------------------------------------------\n";
+}
+
+
+Project* TaskManager::getProject(int projectId)
+{
+    auto it = projects.find(projectId);
+
+    if (it == projects.end())
+        return nullptr;
+
+    return &(it->second);
 }

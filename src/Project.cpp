@@ -81,12 +81,12 @@ int Project::getCreatedBy() const
 // Setters
 void Project::setProjectName()
 {
-    projectName = readProjectName("\nEnter Project Name: ");
+    projectName = readText("\nEnter Project Name: ");
 }
 
 void Project::setDescription()
 {
-    description = readProjectDescription("\nEnter Project Description: ");
+    description = readDescription("\nEnter Project Description: ");
 }
 
 void Project::setProjectStatus()
@@ -141,6 +141,9 @@ void Project::display() const
 
         case ProjectStatus::Cancelled:
             cout<<"Cancelled";
+            break;
+        case ProjectStatus::InActive:
+            cout << "InActive";
             break;
     }
 

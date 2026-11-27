@@ -86,13 +86,15 @@ int main()
         cout << "7. Search Task\n";
         cout << "8. Sort Tasks By ID\n";
         cout << "9. Show High Priority Tasks\n";
-        cout << "10. Delete Task\n";
-        cout << "11. Update User Info\n";
-        cout << "12. Update Project Details\n";
-        cout << "13. View All Users\n";
-        cout << "14. View All Projects\n";
-        cout << "15. Add Task Dependency\n";
-        cout << "16. View Task Dependencies\n";
+        cout << "10. Deleted Tasks\n";
+        cout << "11. Deleted Users\n";
+        cout << "12. Deleted Projects\n";
+        cout << "13. Update User Info\n";
+        cout << "14. Update Project Details\n";
+        cout << "15. View All Users\n";
+        cout << "16. View All Projects\n";
+        cout << "17. Add Task Dependency\n";
+        cout << "18. View Task Dependencies\n";
         cout << "0. Exit\n";
 
         choice = readInt("\nEnter your choice: ");
@@ -131,65 +133,12 @@ int main()
 
                 case 3:
                 {
-                    int id = readInt("Enter Task ID: ");
-
-                    string title = readText1("Enter Task Title: ");
-                    string description = readText1("Enter Description: ");
-
-                    cout << "\nPriority:\n";
-                    cout << "1. LOW\n";
-                    cout << "2. MEDIUM\n";
-                    cout << "3. HIGH\n";
-                    cout << "4. CRITICAL\n";
-
-                    int priorityChoice = readInt("Choose Priority: ");
-
-                    Priority priority;
-
-                    switch (priorityChoice)
-                    {
-                        case 1:
-                            priority = Priority::Low;
-                            break;
-
-                        case 2:
-                            priority = Priority::Medium;
-                            break;
-
-                        case 3:
-                            priority = Priority::High;
-                            break;
-
-                        case 4:
-                            priority = Priority::Critical;
-                            break;
-
-                        default:
-                            throw invalid_argument(
-                                "Invalid priority choice."
-                            );
-                    }
-
-                    int userId =
-                        readInt("Enter Assigned User ID: ");
-
-                    int projectId =
-                        readInt("Enter Project ID: ");
-
-                    manager.createTask(
-                        id,
-                        title,
-                        description,
-                        priority,
-                        userId,
-                        projectId
-                    );
-
+                    manager.createTask();
                     break;
                 }
 
-
-                // =================================
+/*
+x                // =================================
                 // ASSIGN TASK
                 // =================================
 
@@ -259,7 +208,7 @@ int main()
                     break;
                 }
 
-
+*/
                 // =================================
                 // VIEW ALL TASKS
                 // =================================
@@ -268,7 +217,7 @@ int main()
                     manager.viewTasks();
                     break;
 
-
+/*
                 // =================================
                 // SEARCH TASK
                 // =================================
@@ -315,7 +264,7 @@ int main()
 
                     break;
                 }
-
+*/
 
                 // =================================
                 // VIEW ALL USERS

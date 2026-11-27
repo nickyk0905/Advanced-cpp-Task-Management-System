@@ -60,7 +60,9 @@ int readProjectId(const string& prompt, TaskManager& manager)
     }
 }
 
-string readProjectName(const string& prompt)
+
+
+string readText(const string& prompt)
 {
     string input;
 
@@ -72,14 +74,14 @@ string readProjectName(const string& prompt)
         // Check empty input
         if (input.empty())
         {
-            cout << "\nError: Project name cannot be empty.\n";
+            cout << "\nError: Input cannot be empty.\n";
             continue;
         }
 
         // Check length
         if (input.length() < 3 || input.length() > 100)
         {
-            cout << "\nError: Project name's length must be between "
+            cout << "\nError: Input's length must be between "
                  << "3 and 100 characters.\n";
             continue;
         }
@@ -91,7 +93,7 @@ string readProjectName(const string& prompt)
                 ) != string::npos)
             {
                 throw invalid_argument(
-                    "Project name contains invalid characters."
+                    "Input contains invalid characters."
                 );
             }
 
@@ -104,7 +106,7 @@ string readProjectName(const string& prompt)
     }
 }
 
-string readProjectDescription(const string& prompt)
+string readDescription(const string& prompt)
 {
     string input;
 
@@ -116,14 +118,14 @@ string readProjectDescription(const string& prompt)
         // Check empty input
         if (input.empty())
         {
-            cout << "\nError: Project description cannot be empty.\n";
+            cout << "\nError: Description cannot be empty.\n";
             continue;
         }
 
         // Check length
         if (input.length() < 10 || input.length() > 500)
         {
-            cout << "\nError: Project description must be between "
+            cout << "\nError: Description must be between "
                  << "10 and 500 characters.\n";
             continue;
         }
@@ -149,11 +151,11 @@ ProjectStatus readProjectStatus(const string& prompt)
           continue;
         }
 
-        if (input == "Not Started" || input == "not started")
+        if (input == "Not Started" || input == "not started" || input == "Not started")
         {
             return ProjectStatus::NotStarted;
         }
-        else if (input == "In Progress" || input == "in progress")
+        else if (input == "In Progress" || input == "in progress" || input == "In progress")
         {
             return ProjectStatus::InProgress;
         }
@@ -237,6 +239,74 @@ Priority readPriority(const string& prompt)
         }
         
         cout << "\nError: Invalid priority.\n";
+    }
+}
+
+
+
+int readCreatedBy(const string& prompt, TaskManager& manager)
+{
+    string input;
+
+    while (true)
+    {
+        cout << prompt;
+        getline(cin, input);
+
+        if (input.empty())
+        {
+            cout << "\nError: Created By User ID cannot be empty.\n";
+            continue;
+        }
+
+        try
+        {
+            size_t position;
+
+            int userId = stoi(input, &position);
+
+            if (position != input.length())
+            {
+                cout << "\nError: Created By User ID must be a valid integer.\n";
+                continue;
+            }
+
+            if (userId <= 0)
+            {
+                cout << "\nError: Created By User ID must be greater than 0.\n";
+                continue;
+            }
+
+            if (!manager.userExists(userId))
+            {
+                cout << "\nError: User ID does not exist.\n";
+                string choice;
+
+                cout << "Would you like to create a new user? (Yes/No): ";
+                getline(cin, choice);
+
+                if (choice == "Yes" || choice == "yes" ||
+                    choice == "Y" || choice == "y")
+                {
+                    manager.createUser();
+                    cout<<"\n";
+                }
+                else
+                {
+                    continue;
+                }
+            }
+
+            return userId;
+        }
+        catch (const invalid_argument&)
+        {
+            cout << "\nError: Created By User ID must be a valid integer.\n";
+        }
+        catch (const out_of_range&)
+        {
+            cout << "\nError: Created By User ID is out of range.\n";
+        }
     }
 }
 
@@ -328,71 +398,6 @@ string readDate(const string& prompt)
     }
 }
 
-int readCreatedBy(const string& prompt, TaskManager& manager)
-{
-    string input;
-
-    while (true)
-    {
-        cout << prompt;
-        getline(cin, input);
-
-        if (input.empty())
-        {
-            cout << "\nError: Created By User ID cannot be empty.\n";
-            continue;
-        }
-
-        try
-        {
-            size_t position;
-
-            int userId = stoi(input, &position);
-
-            if (position != input.length())
-            {
-                cout << "\nError: Created By User ID must be a valid integer.\n";
-                continue;
-            }
-
-            if (userId <= 0)
-            {
-                cout << "\nError: Created By User ID must be greater than 0.\n";
-                continue;
-            }
-
-            if (!manager.userExists(userId))
-            {
-                cout << "\nError: User ID does not exist.\n";
-                string choice;
-
-                cout << "Would you like to create a new user? (Yes/No): ";
-                getline(cin, choice);
-
-                if (choice == "Yes" || choice == "yes" ||
-                    choice == "Y" || choice == "y")
-                {
-                    manager.createUser();
-                    cout<<"\n";
-                }
-                else
-                {
-                    continue;
-                }
-            }
-
-            return userId;
-        }
-        catch (const invalid_argument&)
-        {
-            cout << "\nError: Created By User ID must be a valid integer.\n";
-        }
-        catch (const out_of_range&)
-        {
-            cout << "\nError: Created By User ID is out of range.\n";
-        }
-    }
-}
 
 int convertDateToNumber(const string& date)
 {

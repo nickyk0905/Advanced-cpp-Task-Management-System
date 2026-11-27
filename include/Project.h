@@ -13,7 +13,8 @@ enum class ProjectStatus
     InProgress,
     OnHold,
     Completed,
-    Cancelled
+    Cancelled,
+    InActive
 };
 
 class Project
